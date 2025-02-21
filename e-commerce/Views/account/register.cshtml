@@ -1,0 +1,424 @@
+﻿@model userregisterviewmodel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_Layout";
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #06d6a0;
+            --accent: #f472b6;
+            --dark: #1a1b1e;
+            --light: #f8f9fc;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8183f4 100%);
+            --hover-gradient: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
+        }
+
+        .registration-container {
+            background: linear-gradient(rgba(248,249,252,0.95), rgba(248,249,252,0.95)), url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-header {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+            .brand-header img {
+                height: 50px;
+                margin-right: 15px;
+                filter: hue-rotate(220deg) saturate(150%);
+            }
+
+        .registration-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.1);
+            overflow: hidden;
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @@keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .benefits-section {
+            padding: 3rem;
+            background: var(--primary-gradient);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 25px 0 0 25px;
+        }
+
+            .benefits-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+                animation: pulse 8s infinite;
+            }
+
+        @@keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 0.1;
+            }
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+            .benefits-list li {
+                padding: 1.5rem;
+                margin: 1rem 0;
+                background: rgba(255,255,255,0.1);
+                border-radius: 15px;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(255,255,255,0.15);
+            }
+
+                .benefits-list li:hover {
+                    transform: translateX(10px);
+                    background: rgba(255,255,255,0.15);
+                }
+
+                .benefits-list li i {
+                    background: var(--primary-gradient);
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    padding: 1rem;
+                    border-radius: 12px;
+                    margin-right: 1.5rem;
+                    font-size: 2rem;
+                    width: 60px;
+                    height: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: rgba(255,255,255,0.1);
+                    border: 2px solid rgba(255,255,255,0.2);
+                }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .trust-badge {
+            width: 80px;
+            height: 80px;
+            padding: 1rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+            .trust-badge:hover {
+                transform: scale(1.1) rotate(15deg);
+            }
+
+        h2.display-5 {
+            position: relative;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+            h2.display-5::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 60px;
+                height: 3px;
+                background: rgba(255,255,255,0.3);
+                border-radius: 2px;
+            }
+
+        .form-section {
+            padding: 3rem;
+        }
+
+        .form-control-lg {
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e0e7ff;
+            transition: all 0.3s ease;
+        }
+
+            .form-control-lg:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            }
+
+        .password-strength .progress {
+            height: 8px;
+            border-radius: 4px;
+            background: #e0e7ff;
+        }
+
+        .progress-bar {
+            background: var(--primary-gradient);
+        }
+
+        .strength-text {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: block;
+            color: var(--dark);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white !important;
+        }
+
+            .btn-primary:hover {
+                background: var(--hover-gradient);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+            }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        a {
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+
+            a:hover {
+                color: var(--accent);
+            }
+    </style>
+}
+<div asp-validation-summary="All"></div>
+
+<div class="registration-container">
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="registration-card shadow-lg">
+                    <div class="row g-0">
+                       
+                        <div class="col-md-6 benefits-section">
+                            <h2 class="mb-4 display-5 fw-bold">Join Our Community</h2>
+                            <ul class="benefits-list">
+                                <li>
+                                    <i class="fas fa-gem"></i>
+                                    <div>
+                                        <h5>Premium Benefits</h5>
+                                        <p class="mb-0">Exclusive discounts & early access</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-bolt"></i>
+                                    <div>
+                                        <h5>Instant Checkout</h5>
+                                        <p class="mb-0">Fast & secure payments</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-heart"></i>
+                                    <div>
+                                        <h5>Personalized Experience</h5>
+                                        <p class="mb-0">Custom recommendations</p>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="trust-badges">
+                                <img src="https://cdn-icons-png.flaticon.com/512/196/196578.png"
+                                     class="trust-badge"
+                                     alt="Secure Payment">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2331/2331946.png"
+                                     class="trust-badge"
+                                     alt="SSL Secure">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1067/1067555.png"
+                                     class="trust-badge"
+                                     alt="Award Winning">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-section">
+                            <h3 class="mb-4 text-center fw-bold">Create Account</h3>
+                            <form asp-action="Register" method="post">
+                                <div class="mb-4">
+                                    <div class="form-floating">
+                                        <input asp-for="username"
+                                               class="form-control form-control-lg"
+                                               placeholder="Username">
+                                        <label asp-for="username">
+                                            <i class="fas fa-user me-2"></i>Username
+                                        </label>
+                                    </div>
+                                    <span asp-validation-for="username"
+                                          class="text-danger small d-block mt-2"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-floating">
+                                        <input asp-for="email"
+                                               class="form-control form-control-lg"
+                                               placeholder="Email">
+                                        <label asp-for="email">
+                                            <i class="fas fa-envelope me-2"></i>Email
+                                        </label>
+                                    </div>
+                                    <span asp-validation-for="email"
+                                          class="text-danger small d-block mt-2"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-floating">
+                                        <input type="password"
+                                               asp-for="Password"
+                                               class="form-control form-control-lg"
+                                               placeholder="Password">
+                                        <label asp-for="Password">
+                                            <i class="fas fa-lock me-2"></i>Password
+                                        </label>
+                                    </div>
+                                    <div class="password-strength mt-3">
+                                        <div class="progress">
+                                            <div class="progress-bar"></div>
+                                        </div>
+                                        <small class="strength-text text-muted"></small>
+                                    </div>
+                                    <span asp-validation-for="Password"
+                                          class="text-danger small d-block mt-2"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="form-floating">
+                                        <input type="password"
+                                               asp-for="Confirmpassword"
+                                               class="form-control form-control-lg"
+                                               placeholder="Confirm Password">
+                                        <label asp-for="Confirmpassword">
+                                            <i class="fas fa-lock me-2"></i>Confirm Password
+                                        </label>
+                                    </div>
+                                    <span asp-validation-for="Confirmpassword"
+                                          class="text-danger small d-block mt-2"></span>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="terms">
+                                    <label class="form-check-label"
+                                           for="terms">
+                                        I agree to the
+                                        <a href="#" class="text-decoration-none">Terms of Service</a>
+                                    </label>
+                                </div>
+
+                                <button type="submit"
+                                        class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                                    Create Account
+                                    <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+
+                                <div class="text-center mt-4">
+                                    <p class="mb-0 text-muted">
+                                        Already have an account?
+                                        <a asp-controller="Account"
+                                           asp-action="Login"
+                                           class="text-decoration-none fw-bold">
+                                            Sign In
+                                        </a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const btn = document.querySelector('.btn-register');
+            const form = this;
+            const originalHTML = btn.innerHTML;
+
+            if (!$(form).valid()) {
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }, 0);
+                return;
+            }
+
+            btn.innerHTML = `
+                        <span class="spinner-border spinner-border-sm" role="status"></span>
+                        Creating Account...
+                    `;
+            btn.disabled = true;
+        });
+
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', () => {
+                const btn = document.querySelector('.btn-register');
+                btn.innerHTML = `<span class="btn-text">Create Account</span>`;
+                btn.disabled = false;
+            });
+        });
+
+       
+    </script>
+}

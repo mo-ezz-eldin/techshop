@@ -1,0 +1,244 @@
+﻿@model List<product>
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #A8A4FF;
+            --accent: #FF7675;
+            --background: linear-gradient(45deg, #F8F9FF, #E6E9FF);
+        }
+
+        body {
+            background: var(--background);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .wishlist-container {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wishlist-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .wishlist-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(108, 92, 231, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .wishlist-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .wishlist-header p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        .wishlist-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(108, 92, 231, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(108, 92, 231, 0.2);
+        }
+
+        .wishlist-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            padding: 1rem;
+            background: linear-gradient(45deg, #F8F9FF, #E6E9FF);
+        }
+
+        .wishlist-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .wishlist-card-body {
+            padding: 1.5rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .wishlist-card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .wishlist-card-title i {
+            color: var(--accent);
+            font-size: 1.2em;
+        }
+
+        .wishlist-card-text {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .wishlist-card-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .wishlist-card-price::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .btn-remove {
+            background: linear-gradient(45deg, var(--accent), #FF6565);
+            color: white !important;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-remove::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn-remove:hover::before {
+            left: 100%;
+        }
+
+        .btn-remove:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 118, 117, 0.3);
+        }
+
+        @@media (max-width: 768px) {
+            .wishlist-container {
+                padding: 2rem 1rem;
+            }
+            
+            .wishlist-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wishlist-container">
+        <div class="wishlist-header">
+            <h1>💖 My Wishlist</h1>
+            <p>Your curated collection of favorite items</p>
+        </div>
+        <div class="row g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="wishlist-card">
+                        <img src="@product.imgsource" 
+                             alt="@product.Name" 
+                             loading="lazy"
+                             class="product-image">
+                        <div class="wishlist-card-body">
+                            <div>
+                                <h5 class="wishlist-card-title">
+                                    <i class="fas fa-heart"></i>
+                                    @product.Name
+                                </h5>
+                                <p class="wishlist-card-text">@product.Description</p>
+                                <p class="wishlist-card-price">$@product.Price.ToString("N2")</p>
+                            </div>
+                            <a class="btn btn-remove"
+                               asp-action="remove"
+                               asp-controller="wishlist"
+                               asp-route-product_id="@product.Id"
+                               asp-route-username="@User.Identity.Name">
+                                <i class="fas fa-trash"></i>
+                                Remove Item
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

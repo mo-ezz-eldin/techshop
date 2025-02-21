@@ -1,0 +1,39 @@
+﻿@model List<category>
+
+@{
+    ViewData["Title"] = "category_details";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               id
+            </th>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+               @item.Id
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  }) |
+                @Html.ActionLink("Details", "Details", new { }) |
+                @Html.ActionLink("Delete", "Delete", new {  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

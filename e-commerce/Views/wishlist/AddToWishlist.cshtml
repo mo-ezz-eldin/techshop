@@ -1,0 +1,18 @@
+﻿<div id="wishlist-notification" class="alert alert-success alert-dismissible fade show fixed-bottom m-3" role="alert" style="max-width: 400px; margin-left: auto;">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem;"></i>
+        <span>@TempData["WishlistNotification"]</span>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<script>
+   
+    setTimeout(function () {
+        var notification = document.getElementById('wishlist-notification');
+        if (notification) {
+            var bootstrapAlert = new bootstrap.Alert(notification);
+            bootstrapAlert.close();
+        }
+    }, 3000);
+</script>

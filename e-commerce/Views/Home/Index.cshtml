@@ -1,0 +1,501 @@
+﻿@model List<product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #FF7675;
+            --accent: #A66CFF;
+            --dark: #2D3436;
+            --light: #F8F9FA;
+        }
+
+        body {
+            background: linear-gradient(135deg, #F8F9FA 0%, #E6E9FF 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @@keyframes titleEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes underlineEntrance {
+            0% {
+                transform: scaleX(0);
+            }
+
+            100% {
+                transform: scaleX(1);
+            }
+        }
+
+        @@keyframes circlePulse {
+            0% {
+                transform: scale(1) translateY(0) rotate(0deg);
+                opacity: 0.15;
+            }
+
+            50% {
+                transform: scale(1.2) translateY(-30px) rotate(180deg);
+                opacity: 0.25;
+            }
+
+            100% {
+                transform: scale(1) translateY(0) rotate(360deg);
+                opacity: 0.15;
+            }
+        }
+
+        @@keyframes slide {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @@keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        h1.text-center {
+            animation: titleEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        h1 span svg {
+            animation: underlineEntrance 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transform-origin: left center;
+            animation-delay: 0.5s;
+            opacity: 0;
+            animation-fill-mode: both;
+        }
+
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(108, 92, 231, 0.15);
+            margin: 0 auto 30px;
+            position: relative;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(108, 92, 231, 0.05);
+            max-width: 320px;
+        }
+
+            .product-card:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 15px 40px rgba(108, 92, 231, 0.2);
+                border-color: rgba(108, 92, 231, 0.3);
+            }
+
+            .product-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 50%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+                transition: 0.5s;
+            }
+
+            .product-card:hover::before {
+                left: 100%;
+            }
+
+        .product-image-container {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(45deg, #F8F9FA, #E6E9FF);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .price-tag {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.2);
+        }
+
+        .btn-details {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+            .btn-details:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            }
+
+            .btn-details::after {
+                content: '→';
+                position: absolute;
+                right: -20px;
+                opacity: 0;
+                transition: all 0.3s;
+            }
+
+            .btn-details:hover::after {
+                right: 20px;
+                opacity: 1;
+            }
+
+        .card-title {
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+            .card-title::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 50px;
+                height: 3px;
+                background: var(--secondary);
+                border-radius: 2px;
+            }
+
+        .card-text {
+            color: #636e72;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .floating-shape {
+            position: absolute;
+            animation: circlePulse 12s infinite ease-in-out;
+            opacity: 0.15;
+            filter: blur(40px);
+            z-index: -1;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            animation: rotation 1s linear infinite;
+        }
+
+            .loader::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                border: 3px solid;
+                border-color: var(--accent) transparent;
+            }
+
+      
+        .no-match-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.1);
+            margin: 2rem auto;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .no-match-container::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: repeating-linear-gradient( 45deg, rgba(108, 92, 231, 0.05), rgba(108, 92, 231, 0.05) 10px, transparent 10px, transparent 20px );
+                animation: slide 20s linear infinite;
+            }
+
+        .no-match-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .no-match-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            position: relative;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .no-match-text {
+            color: #636e72;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .no-match-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .no-match-btn {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .no-match-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            }
+
+        @@media (max-width: 768px) {
+            .product-card {
+                margin-bottom: 20px;
+            }
+
+            .product-image-container {
+                height: 180px;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .price-tag {
+                font-size: 1rem;
+            }
+
+            .no-match-container {
+                padding: 2rem 1rem;
+            }
+
+            .no-match-title {
+                font-size: 2rem;
+            }
+
+            .no-match-actions {
+                flex-direction: column;
+            }
+        }
+
+        @@keyframes rotation {
+            0% {
+                transform: rotate(0deg)
+            }
+
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loading">
+        <span class="loader"></span>
+    </div>
+
+    <div class="container my-5">
+        <div class="floating-shape" style="top: 10%; left: -5%; width: 180px; height: 180px; background: var(--primary); border-radius: 70% 30% 30% 70% / 60% 40% 60% 40%;"></div>
+        <div class="floating-shape" style="top: 30%; left: -8%; width: 220px; height: 220px; background: var(--accent); border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%; animation-delay: -3s;"></div>
+        <div class="floating-shape" style="top: 60%; left: -4%; width: 150px; height: 150px; background: var(--secondary); border-radius: 60% 40% 50% 50% / 60% 40% 60% 40%; animation-delay: -5s;"></div>
+        <div class="floating-shape" style="top: 15%; right: -6%; width: 200px; height: 200px; background: var(--accent); border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; animation-delay: -2s;"></div>
+        <div class="floating-shape" style="top: 45%; right: -3%; width: 170px; height: 170px; background: var(--primary); border-radius: 70% 30% 40% 60% / 60% 40% 60% 40%; animation-delay: -4s;"></div>
+        <div class="floating-shape" style="top: 75%; right: -5%; width: 130px; height: 130px; background: var(--secondary); border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%; animation-delay: -6s;"></div>
+
+        <h1 class="text-center mb-5 display-4 fw-bold" style="color: var(--dark);">
+            Discover Our<br>
+            <span style="color: var(--primary); position: relative;">
+                Amazing Products
+                <svg style="position: absolute; bottom: -10px; left: 0; width: 100%;" viewBox="0 0 100 10">
+                    <path d="M 0,5 Q 25,10 50,5 T 100,5" stroke="var(--secondary)" fill="none" stroke-width="2" />
+                </svg>
+            </span>
+        </h1>
+
+        <div class="row">
+            @if (Model.Any())
+            {
+                @foreach (var product in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card product-card">
+                            <div class="product-image-container">
+                                <img src="@product.imgsource"
+                                     class="product-image"
+                                     alt="@product.Name"
+                                     loading="lazy"
+                                     onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=Product+Image';">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text">@product.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="price-tag">$@product.Price.ToString("N2")</span>
+                                    <a asp-action="view_details" asp-controller="product" asp-route-id="@product.Id"
+                                       class="btn btn-details">
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="no-match-container">
+                        <div class="no-match-icon">
+                            <i class="fas fa-search-minus"></i>
+                        </div>
+                        <h1 class="no-match-title">@ViewData["no_match"]</h1>
+                        <p class="no-match-text">
+                            We couldn't find what you're looking for.<br>
+                            Try different keywords or browse our categories below.
+                        </p>
+                        <div class="no-match-actions">
+                            <a href="/" class="no-match-btn">
+                                <i class="fas fa-home"></i> Back Home
+                            </a>
+                           
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.getElementById('loading').style.display = 'none';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelector('h1 span svg').style.opacity = '1';
+            }, 500);
+        });
+
+        document.querySelectorAll('.floating-shape').forEach(shape => {
+            shape.style.setProperty('--random-x', Math.random() * 20 - 10 + 'px');
+            shape.style.setProperty('--random-y', Math.random() * 20 - 10 + 'px');
+        });
+
+        document.querySelectorAll('.product-image-container').forEach(container => {
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width * 100;
+                const y = (e.clientY - rect.top) / rect.height * 100;
+                container.style.transform = `perspective(1000px) rotateX(${(y - 50) / 2}deg) rotateY(${-(x - 50) / 2}deg)`;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                container.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

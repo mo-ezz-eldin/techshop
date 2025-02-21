@@ -1,0 +1,117 @@
+﻿@model e_commerce.Models.product
+@inject UserManager<appuser> sign
+
+@{
+    var z = await sign.FindByNameAsync(User.Identity.Name);
+    ViewData["Title"] = "Product Details";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">Product Details</h1>
+
+    <div class="card shadow">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="p-4">
+                    @if (!string.IsNullOrEmpty(Model.imgsource))
+                    {
+                        <img src="@Model.imgsource" class="img-fluid rounded-start" alt="@Model.Name" style="max-height: 500px; width: 100%; object-fit: contain;">
+                    }
+                    else
+                    {
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 100%; min-height: 300px;">
+                            <span class="text-muted">No image available</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+         
+            <div class="col-md-6">
+                <div class="card-body p-4">
+                    <form asp-action="product_detail" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        
+                        <div class="action-buttons">
+                            <div class="d-flex gap-3">
+                                <button type="button"
+                                        class="btn btn-outline-primary btn-lg flex-grow-1 position-relative"
+                                        disabled
+                                        title="Coming Soon">
+                                    <i class="bi bi-cart3 me-2"></i>Add to Cart
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                                        Soon
+                                        <span class="visually-hidden">coming soon</span>
+                                    </span>
+                                </button>
+
+                                @if (ViewBag.IsInWishlist)
+                                {
+                                    <button type="button" class="btn btn-success btn-lg px-4" disabled>
+                                        <i class="bi bi-heart-fill"></i>
+                                        <span class="ms-2 d-none d-sm-inline">Added to Wishlist</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a asp-action="AddToWishlist"
+                                       asp-controller="Wishlist"
+                                       asp-route-id="@Model.Id"
+                                       asp-route-userid="@z.Id"
+                                       class="btn btn-outline-danger btn-lg px-4 wishlist-btn">
+                                        <i class="bi bi-heart"></i>
+                                        <span class="ms-2 d-none d-sm-inline">Wishlist</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label text-muted">Product Name</label>
+                            <input asp-for="Name" class="form-control-plaintext" readonly>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label asp-for="Price" class="form-label text-muted">Price</label>
+                                <div class="input-group">
+                                    
+                                    <input value="$@Model.Price" class="form-control-plaintext" readonly>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="quatity" class="form-label text-muted">Available Quantity</label>
+                                <input asp-for="quatity" class="form-control-plaintext" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label text-muted">Description</label>
+                            <textarea asp-for="Description" class="form-control-plaintext" rows="4" readonly></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
