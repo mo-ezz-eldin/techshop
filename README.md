@@ -79,7 +79,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👨‍💻 Author
 Mohammed Ezz
 
-- GitHub: @yourgithubusername
 ## 🙏 Acknowledgments
 - Bootstrap Icons for the beautiful icon set
 - ASP.NET Core community for excellent documentation
