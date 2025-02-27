@@ -1,6 +1,5 @@
 # TechShop E-Commerce Platform 🛍️
 
-![TechShop Banner](wwwroot/images/banner.png)
 
 A modern, feature-rich e-commerce platform built with ASP.NET Core MVC, focusing on technology products with a sleek and responsive design.
 
