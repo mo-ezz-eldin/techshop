@@ -32,7 +32,7 @@ namespace e_commerce.Controllers
             return View("user_wishlist", _iwishlist.GetProductsWhithUser(user.Id));
 
         }
-        [Authorize(Roles = "User")]
+        [Authorize(Roles="User")]
         public IActionResult AddToWishlist(int id, string userid)
         {
             try

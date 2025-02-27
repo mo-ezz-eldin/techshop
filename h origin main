@@ -1,0 +1,96 @@
+[1mdiff --git a/e-commerce/Controllers/accountController.cs b/e-commerce/Controllers/accountController.cs[m
+[1mindex 21ebcdc..abc0635 100644[m
+[1m--- a/e-commerce/Controllers/accountController.cs[m
+[1m+++ b/e-commerce/Controllers/accountController.cs[m
+[36m@@ -35,8 +35,9 @@[m [mnamespace e_commerce.Controllers[m
+                 var result = await _userManager.CreateAsync(user, model.Password);[m
+                 if (result.Succeeded)[m
+                 {[m
+[32m+[m[32m                    await _userManager.AddToRoleAsync(user, "User");[m
+                     await _signInManager.SignInAsync(user, isPersistent: false);[m
+[31m-                    await _userManager.AddToRoleAsync(user,"User");[m
+[32m+[m[41m              [m
+ [m
+                     return RedirectToAction("index", "Home");[m
+                 }[m
+[1mdiff --git a/e-commerce/Controllers/adminController.cs b/e-commerce/Controllers/adminController.cs[m
+[1mindex f58b6d3..084da4a 100644[m
+[1m--- a/e-commerce/Controllers/adminController.cs[m
+[1m+++ b/e-commerce/Controllers/adminController.cs[m
+[36m@@ -21,8 +21,7 @@[m [mnamespace e_commerce.Controllers[m
+ [m
+         public IActionResult Index()[m
+         {[m
+[31m-            var roles=_rolemanager.Roles.ToList();[m
+[31m-            return View("index",roles);[m
+[32m+[m[32m           return RedirectToAction("Index","Home");[m
+         }[m
+         public IActionResult create()[m
+         {[m
+[1mdiff --git a/e-commerce/Controllers/wishlistController.cs b/e-commerce/Controllers/wishlistController.cs[m
+[1mindex 5b342b0..c8f097e 100644[m
+[1m--- a/e-commerce/Controllers/wishlistController.cs[m
+[1m+++ b/e-commerce/Controllers/wishlistController.cs[m
+[36m@@ -32,7 +32,7 @@[m [mnamespace e_commerce.Controllers[m
+             return View("user_wishlist", _iwishlist.GetProductsWhithUser(user.Id));[m
+ [m
+         }[m
+[31m-        [Authorize(Roles = "User")][m
+[32m+[m[32m        [Authorize(Roles="User")][m
+         public IActionResult AddToWishlist(int id, string userid)[m
+         {[m
+             try[m
+[1mdiff --git a/e-commerce/Views/Home/Index.cshtml b/e-commerce/Views/Home/Index.cshtml[m
+[1mindex c5f6b9f..ab93b0f 100644[m
+[1m--- a/e-commerce/Views/Home/Index.cshtml[m
+[1m+++ b/e-commerce/Views/Home/Index.cshtml[m
+[36m@@ -457,7 +457,7 @@[m
+                             Try different keywords or browse our categories below.[m
+                         </p>[m
+                         <div class="no-match-actions">[m
+[31m-                            <a href="/" class="no-match-btn">[m
+[32m+[m[32m                            <a asp-action="Home" asp-controller="Home" class="no-match-btn">[m
+                                 <i class="fas fa-home"></i> Back Home[m
+                             </a>[m
+                            [m
+[1mdiff --git a/e-commerce/Views/Shared/_Layout.cshtml b/e-commerce/Views/Shared/_Layout.cshtml[m
+[1mindex 9e96103..cff8ea3 100644[m
+[1m--- a/e-commerce/Views/Shared/_Layout.cshtml[m
+[1m+++ b/e-commerce/Views/Shared/_Layout.cshtml[m
+[36m@@ -201,8 +201,8 @@[m
+                     <div class="collapse navbar-collapse" id="navbarNav">[m
+                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">[m
+                             <li class="nav-item">[m
+[31m-                                <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")[m
+[31m-                                   asp-controller="Home" asp-action="Index">[m
+[32m+[m[32m                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")"[m
+[32m+[m[32m                               asp-controller="Home" asp-action="Index">[m
+                                     <i class="bi bi-house-door"></i> Home[m
+                                 </a>[m
+                             </li>[m
+[1mdiff --git a/e-commerce/Views/order/orders_per_user.cshtml b/e-commerce/Views/order/orders_per_user.cshtml[m
+[1mindex f9f796a..55f590f 100644[m
+[1m--- a/e-commerce/Views/order/orders_per_user.cshtml[m
+[1m+++ b/e-commerce/Views/order/orders_per_user.cshtml[m
+[36m@@ -17,7 +17,7 @@[m
+                 </div>[m
+                 <h3>No Orders Yet</h3>[m
+                 <p>Start shopping to see your orders here!</p>[m
+[31m-                <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">[m
+[32m+[m[32m                <a asp-controller="Home" asp-action="Home" class="btn btn-primary btn-lg">[m
+                     <i class="bi bi-shop"></i> Start Shopping[m
+                 </a>[m
+             </div>[m
+[1mdiff --git a/e-commerce/Views/product/product_detail.cshtml b/e-commerce/Views/product/product_detail.cshtml[m
+[1mindex a2717a6..3823ce2 100644[m
+[1m--- a/e-commerce/Views/product/product_detail.cshtml[m
+[1m+++ b/e-commerce/Views/product/product_detail.cshtml[m
+[36m@@ -105,7 +105,7 @@[m
+                         </div>[m
+ [m
+                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">[m
+[31m-                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary me-md-2">[m
+[32m+[m[32m                            <a asp-action="Home" asp-controller="Home" class="btn btn-outline-secondary me-md-2">[m
+                                 <i class="bi bi-arrow-left"></i> Back to List[m
+                             </a>[m
+                         </div>[m

@@ -21,8 +21,7 @@ namespace e_commerce.Controllers
 
         public IActionResult Index()
         {
-            var roles=_rolemanager.Roles.ToList();
-            return View("index",roles);
+           return RedirectToAction("Index","Home");
         }
         public IActionResult create()
         {
