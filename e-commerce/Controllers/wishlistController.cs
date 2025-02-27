@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using e_commerce.Models;
 using e_commerce.interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace e_commerce.Controllers
 {
@@ -31,6 +32,7 @@ namespace e_commerce.Controllers
             return View("user_wishlist", _iwishlist.GetProductsWhithUser(user.Id));
 
         }
+        [Authorize(Roles = "User")]
         public IActionResult AddToWishlist(int id, string userid)
         {
             try

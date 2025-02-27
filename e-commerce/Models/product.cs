@@ -11,5 +11,6 @@
 		public string imgsource { get; set; }
 		public category cat { get; set; }
 		public List<wishlist> wishlist { get; set; }
+		public List<order>orders { get; set; }
 	}
 }

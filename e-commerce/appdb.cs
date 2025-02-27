@@ -8,6 +8,7 @@ namespace e_commerce
 {
     public class appdb:IdentityDbContext<appuser,IdentityRole,string>
 	{
+		public DbSet<order> orders {  get; set; }
 		public DbSet<wishlist> wishlist { get; set; }
 		public DbSet<category> categories {  get; set; }
 		public DbSet<product> products { get; set; }

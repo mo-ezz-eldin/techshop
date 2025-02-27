@@ -15,6 +15,7 @@ builder.Services.AddDbContext<appdb>(options =>
 builder.Services.AddScoped<Icategory, categoryrepo>();
 builder.Services.AddScoped<Iprodeuct,productrepo>();
 builder.Services.AddScoped<Iwishlist,wishrepo>();
+builder.Services.AddScoped<Iorder,orderrepo>();
 builder.Services.AddIdentity<appuser, IdentityRole>(option =>
 {
 	option.Password.RequiredLength = 14;

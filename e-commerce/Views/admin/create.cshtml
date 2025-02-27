@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Create New Role";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0"><i class="bi bi-person-badge me-2"></i>Create New Role</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="create" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <div class="mb-4">
+                            <label  class="form-label fw-bold text-primary" >Role Name</label>
+                            <div class="input-group">
+                                <span  class="input-group-text bg-primary text-white">
+                                    <i class="bi bi-tag"></i>
+                                </span>
+                                <input name="name"
+                                       class="form-control form-control-lg"
+                                       placeholder="Enter role name (e.g., Admin, Moderator)"
+                                       autofocus>
+                            </div>
+                           
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-plus-circle me-2"></i>Create Role
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left-circle me-2"></i>Back to List
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Add custom validation styling
+        document.addEventListener('DOMContentLoaded', function () {
+            const forms = document.querySelectorAll('.needs-validation');
+
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        });
+    </script>
+}

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using e_commerce;
 
@@ -11,9 +12,11 @@ using e_commerce;
 namespace e_commerce.Migrations
 {
     [DbContext(typeof(appdb))]
-    partial class appdbModelSnapshot : ModelSnapshot
+    [Migration("20250227153346_creating_orders")]
+    partial class creating_orders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
